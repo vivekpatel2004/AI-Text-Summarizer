@@ -8,13 +8,18 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
 
+  // Use env variable for backend URL
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL; // for Create React App
+  // If you use Vite, replace the above line with:
+  // const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
   const handleSummarize = async () => {
     if (!text.trim()) return alert("Please enter some text.");
     setLoading(true);
     setCopied(false);
 
     try {
-      const res = await axios.post("https://your-backend-url.onrender.com/summarize", {
+      const res = await axios.post(`${BACKEND_URL}/summarize`, {
         text,
       });
       setSummary(res.data.summary);

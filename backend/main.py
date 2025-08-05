@@ -1,52 +1,51 @@
+import os
+import requests
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
-import torch
 
 app = FastAPI()
 
-# Enable CORS to allow frontend requests from any origin
+# Enable CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],            # You can restrict it in production
+    allow_origins=["*"],  # Production me specific domains bhi rakh sakte ho
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Load pre-trained BART model and tokenizer for summarization
-model_name = "facebook/bart-large-cnn"
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
+# HuggingFace API token environment variable se lo
+HF_API_TOKEN = os.getenv("HF_API_TOKEN")
+
+headers = {
+    "Authorization": f"Bearer {HF_API_TOKEN}"
+}
 
 @app.post("/summarize")
 async def summarize(request: Request):
-    # Receive JSON payload
     data = await request.json()
     text = data.get("text", "")
 
-    # Basic input validation
     if not text.strip():
         return {"summary": "Error: No text provided."}
 
-    # Tokenize the input
-    inputs = tokenizer(
-        [text],
-        max_length=300,
-        truncation=True,
-        return_tensors="pt"
-    )
+    API_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-cnn"
 
-    summary_ids = model.generate(
-    inputs["input_ids"],
-    num_beams=4,
-    max_length=60,  # 💡 Limits summary length
-    min_length=30,
-    early_stopping=True
-)
+    payload = {
+        "inputs": text,
+        "parameters": {
+            "max_length": 60,
+            "min_length": 30,
+            "num_beams": 4
+        }
+    }
 
+    response = requests.post(API_URL, headers=headers, json=payload)
 
-    # Decode and return the summary
-    summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+    if response.status_code != 200:
+        return {"summary": "Error: Unable to get summary from HuggingFace API."}
+
+    # response json is a list with summary_text key
+    summary = response.json()[0].get("summary_text", "No summary found.")
 
     return {"summary": summary}
