@@ -1,0 +1,289 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  color: #333;
+  line-height: 1.6;
+  display: flex;
+  justify-content: center;  /* center horizontally */
+  align-items: flex-start; /* top align vertically */
+  padding: 20px; /* padding around the whole page */
+}
+
+.app-wrapper {
+  max-width: 900px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  color: aliceblue;
+  /* REMOVE background, border, shadow to let bg show through */
+  /* padding inside for content */
+  padding: 0 20px;
+}
+
+/* Header Styles */
+header {
+  text-align: center;
+  /* Remove white background and shadows */
+  margin-bottom: 20px;
+  color: white;
+}
+
+header h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  background: linear-gradient(135deg, #aab6fe, #9575cd);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 15px;
+  letter-spacing: -0.02em;
+}
+
+header p {
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  color: #e0e0e0;
+  font-weight: 400;
+}
+
+/* Main Content */
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+/* Textarea Styles */
+textarea {
+  width: 100%;
+  min-height: 200px;
+  padding: 25px;
+  border: none;
+  border-radius: 16px;
+  font-size: 16px;
+  font-family: inherit;
+  line-height: 1.6;
+  background: white; /* ONLY the textarea is white box */
+  color: #333;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  resize: vertical;
+  transition: all 0.3s ease;
+  border: 1px solid #ccc;
+}
+
+textarea:focus {
+  outline: none;
+  box-shadow: 0 0 10px 3px rgba(102, 126, 234, 0.5);
+  border: 1px solid #667eea;
+  transform: translateY(-2px);
+}
+
+textarea::placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+/* Button Styles */
+button {
+  padding: 18px 35px;
+  border: none;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  position: relative;
+  overflow: hidden;
+  align-self: center;
+  min-width: 220px;
+}
+
+button:not(.copy-btn) {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+}
+
+button:not(.copy-btn):hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 40px rgba(102, 126, 234, 0.5);
+}
+
+button:not(.copy-btn):active {
+  transform: translateY(-1px);
+}
+
+button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Summary Container */
+.summary-container {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.summary-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.summary-header h3 {
+  font-size: clamp(1.3rem, 3vw, 1.6rem);
+  color: #333;
+  font-weight: 600;
+}
+
+.copy-btn {
+  background: linear-gradient(135deg, #4CAF50, #45a049);
+  color: white;
+  padding: 12px 20px;
+  font-size: 14px;
+  border-radius: 25px;
+  box-shadow: 0 8px 20px rgba(76, 175, 80, 0.3);
+  min-width: 100px;
+}
+
+.copy-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(76, 175, 80, 0.4);
+}
+
+.summary-container p {
+  font-size: clamp(1rem, 2vw, 1.1rem);
+  line-height: 1.8;
+  color: #444;
+  text-align: justify;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 30px 20px;
+  margin-top: 40px;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  body {
+    padding: 15px;
+  }
+
+  .app-wrapper {
+    max-width: 100%;
+    padding: 0 15px;
+  }
+
+  textarea {
+    min-height: 150px;
+    padding: 20px;
+    font-size: 16px;
+  }
+
+  button:not(.copy-btn) {
+    width: 100%;
+    padding: 16px 25px;
+  }
+
+  .summary-container {
+    padding: 25px 20px;
+  }
+
+  .summary-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .copy-btn {
+    align-self: stretch;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
+  }
+
+  .app-wrapper {
+    padding: 0 10px;
+  }
+
+  header h1 {
+    font-size: clamp(1.6rem, 6vw, 2.5rem);
+  }
+
+  textarea {
+    padding: 15px;
+    border-radius: 12px;
+  }
+
+  .summary-container {
+    padding: 20px 15px;
+    border-radius: 15px;
+  }
+
+  button {
+    padding: 14px 20px;
+    font-size: 15px;
+  }
+}
+
+/* Loading Animation */
+.loading {
+  position: relative;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid transparent;
+  border-top: 2px solid rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
